@@ -21,7 +21,6 @@ class HistoricoMov extends StatelessWidget {
       backgroundColor: Cores.bgTela,
       body: Center(
         child: Scrollbar(
-          thickness: 10,
           child: ListHistMov(),
         ),
       ),

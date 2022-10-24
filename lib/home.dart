@@ -18,7 +18,10 @@ class Home extends StatelessWidget {
       ),
       backgroundColor: Cores.bgTela,
       body: Center(
-        child: HomeBody(),
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: HomeBody(),
+        ),
       ),
     );
   }

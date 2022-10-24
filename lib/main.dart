@@ -3,8 +3,8 @@ import 'Funcoes/global.dart';
 import './login.dart';
 
 /// TODO:
-/// - handlers/validação dos inputFields
-/// - estruturar melhor app
+/// - handlers/validação dos inputFields <-
+///   - inputfields da tela de Cadastro bugando
 /// - historico de movimentações (?)
 /// - outras telas
 /// - backend
@@ -50,7 +50,10 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
       body: Center(
-        child: Login(),
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Login(),
+        ),
       ),
     );
   }
