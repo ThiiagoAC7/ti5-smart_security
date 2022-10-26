@@ -41,14 +41,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Cores.bgTela,
-      appBar: AppBar(
-        title: const Text(
-          'Smart Security',
-          style: textStyleTitle,
-        ),
-        backgroundColor: Cores.bgAppBar,
-        centerTitle: true,
-      ),
+      appBar: mainAppBar(),
       body: Center(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),

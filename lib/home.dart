@@ -8,14 +8,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Smart Security',
-          style: textStyleTitle,
-        ),
-        backgroundColor: Cores.bgAppBar,
-        centerTitle: true,
-      ),
+      appBar: mainAppBar(),
       backgroundColor: Cores.bgTela,
       body: Center(
         child: SingleChildScrollView(

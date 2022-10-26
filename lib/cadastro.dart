@@ -9,24 +9,17 @@ class Cadastro extends StatefulWidget {
 }
 
 class _CadastroState extends State<Cadastro> {
+  static final formKey = GlobalKey<FormState>();
+  final emailControllerCad = TextEditingController();
+  final senhaControllerCad = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final _emailController = TextEditingController();
-    final _senhaController = TextEditingController();
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Cores.bgTela,
-      appBar: AppBar(
-        title: const Text(
-          'Smart Security',
-          style: textStyleTitle,
-        ),
-        backgroundColor: Cores.bgAppBar,
-        centerTitle: true,
-      ),
+      appBar: mainAppBar(),
       body: Center(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -47,7 +40,7 @@ class _CadastroState extends State<Cadastro> {
                 vertical: 10,
               ),
               child: Form(
-                key: _formKey,
+                key: formKey,
                 child: Column(
                   // ignore: prefer_const_literals_to_create_immutables
                   children: <Widget>[
@@ -60,16 +53,16 @@ class _CadastroState extends State<Cadastro> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 30),
-                      child: buildTextField('email', _emailController),
+                      child: buildTextField('email', emailControllerCad),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 15),
-                      child: buildTextField('senha', _senhaController),
+                      child: buildTextField('senha', senhaControllerCad),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 15),
                       child: sizedBoxButton('Cadastrar', () {
-                        if (_formKey.currentState!.validate()) {
+                        if (formKey.currentState!.validate()) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Processando...'),
@@ -80,7 +73,15 @@ class _CadastroState extends State<Cadastro> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 15),
-                      child: sizedBoxButton('Login', () {}, 315, 30),
+                      child: sizedBoxButton('Login', () {
+                        if (formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Processando...'),
+                            ),
+                          );
+                        }
+                      }, 315, 30),
                     )
                   ],
                 ),

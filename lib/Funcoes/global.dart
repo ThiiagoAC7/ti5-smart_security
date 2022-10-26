@@ -62,3 +62,14 @@ Widget buildTextField(String hint, TextEditingController ctrl) {
     controller: ctrl,
   );
 }
+
+PreferredSizeWidget mainAppBar() {
+  return AppBar(
+    title: const Text(
+      'Smart Security',
+      style: textStyleTitle,
+    ),
+    backgroundColor: Cores.bgAppBar,
+    centerTitle: true,
+  );
+}

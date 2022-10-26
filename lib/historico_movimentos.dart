@@ -29,7 +29,7 @@ class HistoricoMov extends StatelessWidget {
 }
 
 class ListHistMov extends StatelessWidget {
-  List<HistMovList> movlist = getHistMovList();
+  final List<HistMovList> movlist = getHistMovList();
 
   @override
   Widget build(BuildContext context) {

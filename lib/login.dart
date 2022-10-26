@@ -13,9 +13,9 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final _emailController = TextEditingController();
-    final _senhaController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    final emailController = TextEditingController();
+    final senhaController = TextEditingController();
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
           vertical: 10,
         ),
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: Column(
             // ignore: prefer_const_literals_to_create_immutables
             children: <Widget>[
@@ -49,18 +49,18 @@ class _LoginState extends State<Login> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 30),
-                child: buildTextField('email', _emailController),
+                child: buildTextField('email', emailController),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 15),
-                child: buildTextField('senha', _senhaController),
+                child: buildTextField('senha', senhaController),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 15),
                 child: sizedBoxButton(
                   'Entrar',
                   () {
-                    if (_formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
