@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'Funcoes/global.dart';
+import 'Utils/global.dart';
 import './login.dart';
 
 /// TODO:
-/// - handlers/validação dos inputFields <-
-///   - inputfields da tela de Cadastro bugando
 /// - historico de movimentações (?)
 /// - outras telas
 /// - backend

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
-import './Funcoes/global.dart';
+import 'Utils/global.dart';
 import './Model/hist_mov_list.dart';
 
 class HistoricoMov extends StatelessWidget {

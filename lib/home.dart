@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smart_security/historico_movimentos.dart';
-import './Funcoes/global.dart';
+import 'Utils/global.dart';
+import 'package:http/http.dart';
+import 'dart:io';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -68,9 +70,39 @@ class HomeBody extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 15),
             child: sizedBoxButton('Adicionar Camera', () {}, 300, 30),
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15, bottom: 30),
+            child: sizedBoxButton('Teste pro Server ', () {
+              makeGetRequest();
+            }, 300, 30),
+          ),
         ],
       ),
     );
+  }
+
+  makeGetRequest() async {
+    try {
+      final url = Uri.parse(localhost());
+      Response response =
+          await post(url, body: {'name': 'doodle', 'color': 'blue'});
+      if (response.statusCode == 200) {
+        print('Response body: ${response.body}');
+        // setState(() {});
+      } else {
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      print('->' + e.toString());
+    }
+  }
+
+  String localhost() {
+    if (Platform.isAndroid) {
+      return 'http://10.0.2.2:3000';
+    } else {
+      return 'http://localhost:3000';
+    }
   }
 }

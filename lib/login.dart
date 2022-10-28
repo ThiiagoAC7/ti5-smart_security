@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_security/home.dart';
-import 'Funcoes/global.dart';
+import 'Utils/global.dart';
 import './cadastro.dart';
 
 class Login extends StatefulWidget {

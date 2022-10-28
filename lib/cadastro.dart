@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Funcoes/global.dart';
+import 'Utils/global.dart';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
