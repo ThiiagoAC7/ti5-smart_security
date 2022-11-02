@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from Model import db, User, UserSchema
+import secrets
 
 users_schema = UserSchema(many=True)
 user_schema = UserSchema()
@@ -22,10 +23,17 @@ class Register(Resource):
         if user:
             return {"message": "Username already exists"}, 400
 
+        generated_key = secrets.token_urlsafe(20)
+
+        api = User.query.filter_by(api_key=generated_key).first()
+        if api:
+            return {"message": "Username already exists"}, 400
+
         user = User(
             user_name=json_data["user_name"],
             password=json_data["password"],
             rfid_id=json_data["rfid_id"],
+            api_key=generated_key,
         )
 
         db.session.add(user)

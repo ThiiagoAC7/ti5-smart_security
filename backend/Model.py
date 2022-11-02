@@ -15,6 +15,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(), nullable=False)
     password = db.Column(db.String(), nullable=False)
+    api_key = db.Column(db.String(), nullable=False)
     creation_date = db.Column(
         db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False
     )
@@ -23,10 +24,11 @@ class User(db.Model):
     )
     rfid = db.relationship("Rfid", backref=db.backref("users", lazy="dynamic"))
 
-    def __init__(self, user_name, rfid_id, password) -> None:
+    def __init__(self, user_name, rfid_id, password, api_key) -> None:
         self.user_name = user_name
         self.rfid_id = rfid_id
         self.password = password
+        self.api_key = api_key
 
     def __repr__(self) -> str:
         return "<id {}>".format(self.id)
@@ -38,6 +40,7 @@ class User(db.Model):
             "creation_date": self.creation_date,
             "rfid_id": self.rfid_id,
             "password": self.password,
+            "api_key": self.api_key,
         }
 
 
@@ -101,6 +104,7 @@ class UserSchema(ma.Schema):
         required=True, allow_none=False, validate=validate.Length(1)
     )
     password = fields.String(required=True, allow_none=False)
+    api_key = fields.String(required=True, allow_none=False)
     creation_date = fields.DateTime()
 
 
