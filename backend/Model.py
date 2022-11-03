@@ -19,14 +19,9 @@ class User(db.Model):
     creation_date = db.Column(
         db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False
     )
-    rfid_id = db.Column(
-        db.Integer, db.ForeignKey("rfid.id", ondelete="CASCADE"), nullable=False
-    )
-    rfid = db.relationship("Rfid", backref=db.backref("users", lazy="dynamic"))
 
-    def __init__(self, user_name, rfid_id, password, api_key) -> None:
+    def __init__(self, user_name, password, api_key) -> None:
         self.user_name = user_name
-        self.rfid_id = rfid_id
         self.password = password
         self.api_key = api_key
 
@@ -38,7 +33,6 @@ class User(db.Model):
             "id": self.id,
             "user_name": self.user_name,
             "creation_date": self.creation_date,
-            "rfid_id": self.rfid_id,
             "password": self.password,
             "api_key": self.api_key,
         }
@@ -50,17 +44,23 @@ class Rfid(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     rfid = db.Column(db.String(), nullable=False)
     object = db.Column(db.String(), nullable=False)
+    user_id = db.Column(db.Integer(), db.ForeignKey("users.id"))
 
-    def __init__(self, id, rfid, object):
-        self.id = id
+    def __init__(self, rfid, object, user_id):
         self.object = object
         self.rfid = rfid
+        self.user_id = user_id
 
     def __repr__(self) -> str:
         return "<id {}>".format(self.id)
 
     def serialize(self):
-        return {"id": self.id, "rfid": self.rfid, "object": self.object}
+        return {
+            "id": self.id,
+            "rfid": self.rfid,
+            "object": self.object,
+            "user_id": self.user_id,
+        }
 
 
 class Activity(db.Model):
@@ -95,6 +95,7 @@ class RfidSchema(ma.Schema):
     id = fields.Integer()
     rfid = fields.String(required=True)
     object = fields.String(required=True)
+    user_id = fields.Integer(required=True)
 
 
 class UserSchema(ma.Schema):

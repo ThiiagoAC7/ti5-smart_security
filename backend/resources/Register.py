@@ -32,7 +32,6 @@ class Register(Resource):
         user = User(
             user_name=json_data["user_name"],
             password=json_data["password"],
-            rfid_id=json_data["rfid_id"],
             api_key=generated_key,
         )
 
