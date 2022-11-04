@@ -9,11 +9,13 @@ user_schema = UserSchema()
 class Signin(Resource):
     def post(self):
         result = ""
-        json_data = request.get_json(force=True)
+        json_data = request.get_json(force=True)      
         try:
-            auth = request.headers["Authorization"]
-            if not auth:
-                result = self.username_and_password_signin(json_data)
+            auth = request.headers["Authorization"]            
+            if auth:
+                result = self.username_and_password_signin(json_data)                
+                if result["api_key"] != auth:
+                    return {"message": "User not authorized. Different api key."}, 500
             else:
                 user = User.query.filter_by(api_key=auth).first()
                 if user:
@@ -21,13 +23,13 @@ class Signin(Resource):
                 else:
                     result = self.username_and_password_signin(json_data)
         except:
-            return {"message": "User not authorized"}, 500
-
+          return {"message": "User not authorized. No auth provided"}, 500          
+      
         return {"status": "success", "data": result}, 201
 
     def username_and_password_signin(self, json_data):
         if not json_data:
-            return {"message": "No input data porvided"}, 400
+            return {"message": "No input data provided"}, 400
 
         user = User.query.filter_by(user_name=json_data["user_name"]).first()
         if not user:

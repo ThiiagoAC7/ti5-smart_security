@@ -45,3 +45,4 @@ app.*.map.json
 android/gradle.properties
 .vscode/settings.json
 /backend/env
+/backend/migrations
