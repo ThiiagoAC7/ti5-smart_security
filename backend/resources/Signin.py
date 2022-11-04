@@ -11,7 +11,7 @@ class Signin(Resource):
         result = ""
         json_data = request.get_json(force=True)
         try:
-            auth = request.authorization
+            auth = request.headers["Authorization"]
             if not auth:
                 result = self.username_and_password_signin(json_data)
             else:
