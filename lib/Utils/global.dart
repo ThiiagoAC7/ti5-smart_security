@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const API_URL = "10.0.2.2:5000";
+
 const TextStyle textStyleTitle = TextStyle(
   fontSize: 20,
   letterSpacing: 3,

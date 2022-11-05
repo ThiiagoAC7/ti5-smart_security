@@ -3,11 +3,10 @@ import 'Utils/global.dart';
 import './login.dart';
 
 /// TODO:
-/// - historico de movimentações (?)
-/// - outras telas
-/// - backend
-///   - nodejs (?)
-///   - precisa comunicar com o arduino
+/// - historico de movimentações
+/// - estuturar cominicação com backend
+/// - validação logado/não logado
+/// -
 
 void main() {
   runApp(const MyApp());

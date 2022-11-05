@@ -73,36 +73,10 @@ class HomeBody extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(top: 15, bottom: 30),
-            child: sizedBoxButton('Teste pro Server ', () {
-              makeGetRequest();
-            }, 300, 30),
+            child: sizedBoxButton('Teste pro Server ', () {}, 300, 30),
           ),
         ],
       ),
     );
-  }
-
-  makeGetRequest() async {
-    try {
-      final url = Uri.parse(localhost());
-      Response response =
-          await post(url, body: {'name': 'doodle', 'color': 'blue'});
-      if (response.statusCode == 200) {
-        print('Response body: ${response.body}');
-        // setState(() {});
-      } else {
-        throw Exception(response.reasonPhrase);
-      }
-    } catch (e) {
-      print('->' + e.toString());
-    }
-  }
-
-  String localhost() {
-    if (Platform.isAndroid) {
-      return 'http://10.0.2.2:3000';
-    } else {
-      return 'http://localhost:3000';
-    }
   }
 }

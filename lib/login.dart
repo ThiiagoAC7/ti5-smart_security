@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smart_security/home.dart';
 import 'Utils/global.dart';
 import './cadastro.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -61,6 +63,7 @@ class _LoginState extends State<Login> {
                   'Entrar',
                   () {
                     if (formKey.currentState!.validate()) {
+                      loginValidate(emailController.text, senhaController.text);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -94,5 +97,34 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  loginValidate(userName, password) async {
+    debugPrint(
+        '==============================================================================');
+
+    var client = http.Client();
+    try {
+      var url = Uri.http(API_URL, "/api/signin");
+      var response = await client.post(
+        url,
+        body: jsonEncode({
+          "user_name": userName,
+          "password": password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "7Sff-YcHdH_jDdWgPggv5Xe7LJ0",
+        },
+        encoding: Utf8Codec(),
+      );
+      debugPrint('-->> Response status: ${response.statusCode}');
+      debugPrint('-->> Response body: ${response.body}');
+
+      debugPrint(
+          '==============================================================================');
+    } finally {
+      client.close();
+    }
   }
 }
