@@ -67,17 +67,18 @@ class Activity(db.Model):
     __tablename__ = "activity_log"
 
     id = db.Column(db.Integer, primary_key=True)
-    rfid_id = db.Column(
-        db.Integer, db.ForeignKey("rfid.id", ondelete="CASCADE"), nullable=False
-    )
+    rfid_id = db.Column(db.Integer(), db.ForeignKey("rfid.id"))
     type = db.Column(db.String(), nullable=False)
     log = db.Column(db.String(), nullable=False)
+    creation_date = db.Column(
+        db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False
+    )
 
-    def __init__(self, id, rfid_id, type, log):
-        self.id = id
+    def __init__(self, rfid_id, type, log, creation_date):
         self.rfid_id = rfid_id
         self.type = type
         self.log = log
+        self.creation_date = creation_date
 
     def __repr__(self) -> str:
         return "<id {}>".format(self.id)
@@ -88,6 +89,7 @@ class Activity(db.Model):
             "rfid_id": self.rfid_id,
             "type": self.type,
             "log": self.log,
+            "creation_date": self.creation_date,
         }
 
 
@@ -114,3 +116,4 @@ class ActivitySchema(ma.Schema):
     rfid_id = fields.Integer(required=True)
     type = fields.String(required=True, allow_none=False)
     log = fields.String(required=True, allow_none=False)
+    creation_date = fields.DateTime()
