@@ -4,8 +4,11 @@ import './login.dart';
 
 /// TODO:
 /// - historico de movimentações
-/// - estuturar cominicação com backend
-/// - validação logado/não logado
+///   - botao -> GET no banco de dados
+///              tabela activity_log
+/// - configurar RFID ->
+///   POST -> mandar a tag_rfid (rfid),
+///                    nome_objeto (objeto)
 /// -
 
 void main() {

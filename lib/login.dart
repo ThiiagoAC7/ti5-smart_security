@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:smart_security/home.dart';
 import 'Utils/global.dart';
@@ -61,15 +63,31 @@ class _LoginState extends State<Login> {
                 padding: EdgeInsets.only(top: 15),
                 child: sizedBoxButton(
                   'Entrar',
-                  () {
+                  () async {
                     if (formKey.currentState!.validate()) {
-                      loginValidate(emailController.text, senhaController.text);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Home(),
-                        ),
-                      );
+                      var logado = await loginValidate(
+                          emailController.text, senhaController.text);
+                      if (logado) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Home(),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Falha no Login',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 20,
+                              ),
+                            ),
+                            backgroundColor: Colors.black54,
+                          ),
+                        );
+                      }
                     }
                   },
                   315,
@@ -99,10 +117,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  loginValidate(userName, password) async {
-    debugPrint(
-        '==============================================================================');
-
+  Future<bool> loginValidate(userName, password) async {
     var client = http.Client();
     try {
       var url = Uri.http(API_URL, "/api/signin");
@@ -118,13 +133,20 @@ class _LoginState extends State<Login> {
         },
         encoding: Utf8Codec(),
       );
-      debugPrint('-->> Response status: ${response.statusCode}');
-      debugPrint('-->> Response body: ${response.body}');
-
-      debugPrint(
-          '==============================================================================');
+      if (response.statusCode == 201) {
+        // debugPrint(response.body);
+        Map login = jsonDecode(response.body);
+        // debugPrint('-->> Response status: ${response.statusCode}');
+        // debugPrint('-->> Response body: ${response.body}');
+        // debugPrint('--->> Status : ${login['status']} ');
+        // debugPrint('--->> Api Key: ${login['data']['api_key']} ');
+        if (login['status'] == 'success') {
+          return Future<bool>.value(true);
+        }
+      }
     } finally {
       client.close();
     }
+    return Future<bool>.value(false);
   }
 }

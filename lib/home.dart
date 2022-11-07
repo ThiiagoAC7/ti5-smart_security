@@ -71,10 +71,6 @@ class HomeBody extends StatelessWidget {
             padding: EdgeInsets.only(top: 15),
             child: sizedBoxButton('Adicionar Camera', () {}, 300, 30),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 15, bottom: 30),
-            child: sizedBoxButton('Teste pro Server ', () {}, 300, 30),
-          ),
         ],
       ),
     );
