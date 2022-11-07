@@ -1,5 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'Utils/global.dart';
+import 'Utils/requisicoes.dart';
+import 'home.dart';
+import 'dart:developer' as dev;
 
 class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
@@ -53,33 +58,77 @@ class _CadastroState extends State<Cadastro> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 30),
-                      child: buildTextField('email', emailControllerCad),
+                      child:
+                          buildTextField('usuario', emailControllerCad, false),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 15),
-                      child: buildTextField('senha', senhaControllerCad),
+                      child: buildTextField('senha', senhaControllerCad, true),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 15),
-                      child: sizedBoxButton('Cadastrar', () {
+                      child: sizedBoxButton('Cadastrar', () async {
                         if (formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Processando...'),
-                            ),
-                          );
+                          var registrado = await registerValidate(
+                              emailControllerCad.text, senhaControllerCad.text);
+                          dev.log("Cadastrar", error: registrado);
+                          if (registrado == deubom) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Registrado com sucesso!',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                backgroundColor: Colors.black54,
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Falha ao Registrar: $registrado',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                backgroundColor: Colors.black54,
+                              ),
+                            );
+                          }
                         }
                       }, 315, 30),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 15),
-                      child: sizedBoxButton('Login', () {
+                      child: sizedBoxButton('Login', () async {
                         if (formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Processando...'),
-                            ),
-                          );
+                          var logado = await loginValidate(
+                              emailControllerCad.text, senhaControllerCad.text);
+                          if (logado == deubom) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Home(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Falha no Login $logado',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                backgroundColor: Colors.black54,
+                              ),
+                            );
+                          }
                         }
                       }, 315, 30),
                     )

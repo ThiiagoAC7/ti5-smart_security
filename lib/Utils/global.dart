@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-const API_URL = "10.0.2.2:5000";
-
 const TextStyle textStyleTitle = TextStyle(
   fontSize: 20,
   letterSpacing: 3,
@@ -45,7 +43,8 @@ Widget sizedBoxButton(String label, Function()? func, double w, double h) {
   );
 }
 
-Widget buildTextField(String hint, TextEditingController ctrl) {
+Widget buildTextField(
+    String hint, TextEditingController ctrl, bool obscureText) {
   return TextFormField(
     decoration: InputDecoration(
       filled: true,
@@ -62,6 +61,7 @@ Widget buildTextField(String hint, TextEditingController ctrl) {
       return null;
     },
     controller: ctrl,
+    obscureText: obscureText,
   );
 }
 

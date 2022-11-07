@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_security/historico_movimentos.dart';
 import 'Utils/global.dart';
-import 'package:http/http.dart';
-import 'dart:io';
 import 'rfid.dart';
 
 class Home extends StatelessWidget {
@@ -62,7 +60,7 @@ class HomeBody extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => rfid(),
+                  builder: (context) => Rfid(),
                 ),
               );
             }, 300, 30),

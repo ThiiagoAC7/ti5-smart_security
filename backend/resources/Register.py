@@ -17,7 +17,7 @@ class Register(Resource):
         json_data = request.get_json(force=True)
 
         if not json_data:
-            return {"message": "No input data porvided"}, 400
+            return {"message": "No input data provided"}, 400
 
         user = User.query.filter_by(user_name=json_data["user_name"]).first()
         if user:

@@ -7,9 +7,15 @@ import './login.dart';
 ///   - botao -> GET no banco de dados
 ///              tabela activity_log
 /// - configurar RFID ->
-///   POST -> mandar a tag_rfid (rfid),
-///                    nome_objeto (objeto)
-/// -
+///   - botao ->
+///     mandar nome para o arduino + id de quem está adicionando
+///     arduino fica esperando a leitura da tag
+///     arduino deve manda para o backend a tag + o nome
+///       - tabela rfid
+/// - ativar/desativar alarme ->
+///   - botao ->
+///     mandar sinal para o arduino para ligar/desligar
+///
 
 void main() {
   runApp(const MyApp());

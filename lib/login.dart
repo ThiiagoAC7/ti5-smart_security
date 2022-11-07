@@ -1,11 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:smart_security/home.dart';
 import 'Utils/global.dart';
 import './cadastro.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'Utils/requisicoes.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -53,11 +51,11 @@ class _LoginState extends State<Login> {
               ),
               Padding(
                 padding: EdgeInsets.only(top: 30),
-                child: buildTextField('email', emailController),
+                child: buildTextField('usuario', emailController, false),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 15),
-                child: buildTextField('senha', senhaController),
+                child: buildTextField('senha', senhaController, true),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 15),
@@ -67,7 +65,7 @@ class _LoginState extends State<Login> {
                     if (formKey.currentState!.validate()) {
                       var logado = await loginValidate(
                           emailController.text, senhaController.text);
-                      if (logado) {
+                      if (logado == deubom) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -76,9 +74,9 @@ class _LoginState extends State<Login> {
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             content: Text(
-                              'Falha no Login',
+                              'Falha no Login $logado',
                               style: TextStyle(
                                 color: Colors.red,
                                 fontSize: 20,
@@ -115,38 +113,5 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
-  }
-
-  Future<bool> loginValidate(userName, password) async {
-    var client = http.Client();
-    try {
-      var url = Uri.http(API_URL, "/api/signin");
-      var response = await client.post(
-        url,
-        body: jsonEncode({
-          "user_name": userName,
-          "password": password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "7Sff-YcHdH_jDdWgPggv5Xe7LJ0",
-        },
-        encoding: Utf8Codec(),
-      );
-      if (response.statusCode == 201) {
-        // debugPrint(response.body);
-        Map login = jsonDecode(response.body);
-        // debugPrint('-->> Response status: ${response.statusCode}');
-        // debugPrint('-->> Response body: ${response.body}');
-        // debugPrint('--->> Status : ${login['status']} ');
-        // debugPrint('--->> Api Key: ${login['data']['api_key']} ');
-        if (login['status'] == 'success') {
-          return Future<bool>.value(true);
-        }
-      }
-    } finally {
-      client.close();
-    }
-    return Future<bool>.value(false);
   }
 }
