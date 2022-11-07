@@ -3,6 +3,7 @@ import 'package:smart_security/historico_movimentos.dart';
 import 'Utils/global.dart';
 import 'package:http/http.dart';
 import 'dart:io';
+import 'rfid.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -57,15 +58,22 @@ class HomeBody extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(top: 15),
+            child: sizedBoxButton('Configurar RFID', () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => rfid(),
+                ),
+              );
+            }, 300, 30),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15),
             child: sizedBoxButton('Ativar Alarme', () {}, 300, 30),
           ),
           Padding(
             padding: EdgeInsets.only(top: 15),
             child: sizedBoxButton('Desativar Alarme', () {}, 300, 30),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 15),
-            child: sizedBoxButton('Configurar RFID', () {}, 300, 30),
           ),
           Padding(
             padding: EdgeInsets.only(top: 15),
