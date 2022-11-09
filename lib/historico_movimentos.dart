@@ -45,7 +45,10 @@ class ListHistMov extends StatelessWidget {
             color: Color.fromARGB(255, 191, 190, 190),
             child: ListTile(
               title: Text(
-                movlist[index].tipo! + ' ' + movlist[index].label!,
+                'Produto: ' +
+                    movlist[index].label! +
+                    '; Tipo: ' +
+                    movlist[index].tipo!,
                 textAlign: TextAlign.start,
                 style: textStyleHistorico,
               ),

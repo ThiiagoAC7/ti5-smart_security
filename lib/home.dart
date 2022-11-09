@@ -30,19 +30,6 @@ class HomeBody extends StatelessWidget {
       color: Cores.bgTela,
       child: Column(
         children: <Widget>[
-          Container(
-            color: Colors.black,
-            margin: EdgeInsets.only(top: 20),
-            width: 300,
-            height: 200,
-          ),
-          Container(
-            margin: EdgeInsets.only(bottom: 150),
-            child: Text(
-              'Cameras: 1 2 3 ',
-              style: textStyleTitle,
-            ),
-          ),
           Padding(
             padding: EdgeInsets.only(top: 15),
             child: sizedBoxButton('Histórico de Movimentos', () {
@@ -72,10 +59,6 @@ class HomeBody extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 15),
             child: sizedBoxButton('Desativar Alarme', () {}, 300, 30),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 15),
-            child: sizedBoxButton('Adicionar Camera', () {}, 300, 30),
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-// import '../Funcoes/global.dart';
-import 'package:intl/intl.dart';
+import '../Utils/requisicoes.dart';
+import 'dart:developer' as dev;
+import 'dart:convert';
 
 class HistMovList {
   int? id;
@@ -20,119 +21,30 @@ class HistMovList {
 
 List<HistMovList> histMovList = [];
 
+parseHistMovList() async {
+  if (histMovList == []) {
+    dev.log("parseHistMovList - init");
+    var jsonstring = await getActivityLog();
+
+    for (var i in jsonstring) {
+      fromJson(i);
+    }
+    dev.log("parseHistMovList - fim");
+  }
+}
+
 List<HistMovList> getHistMovList() {
-  DateFormat dFormat = DateFormat('dd-MM-yyyy HH:mm:ss');
-
-  histMovList.add(
-    HistMovList(
-      tipo: 'Sensor',
-      label: 'X',
-      id: 0,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Movimento suspeito detectado',
-    ),
-  );
-  histMovList.add(
-    HistMovList(
-      tipo: 'Sensor',
-      label: 'Y',
-      id: 1,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Objeto movimentado',
-    ),
-  );
-  histMovList.add(
-    HistMovList(
-      tipo: 'Pessoa',
-      label: 'Z',
-      id: 2,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Entrou no ambiente',
-    ),
-  );
-  histMovList.add(
-    HistMovList(
-      tipo: 'Pessoa',
-      label: 'W',
-      id: 3,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Saiu do Ambiente',
-    ),
-  );
-
-  histMovList.add(
-    HistMovList(
-      tipo: 'Sensor',
-      label: 'X',
-      id: 0,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Movimento suspeito detectado',
-    ),
-  );
-  histMovList.add(
-    HistMovList(
-      tipo: 'Sensor',
-      label: 'Y',
-      id: 1,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Objeto movimentado',
-    ),
-  );
-  histMovList.add(
-    HistMovList(
-      tipo: 'Pessoa',
-      label: 'Z',
-      id: 2,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Entrou no ambiente',
-    ),
-  );
-  histMovList.add(
-    HistMovList(
-      tipo: 'Pessoa',
-      label: 'W',
-      id: 3,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Saiu do Ambiente',
-    ),
-  );
-
-  histMovList.add(
-    HistMovList(
-      tipo: 'Sensor',
-      label: 'X',
-      id: 0,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Movimento suspeito detectado',
-    ),
-  );
-  histMovList.add(
-    HistMovList(
-      tipo: 'Sensor',
-      label: 'Y',
-      id: 1,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Objeto movimentado',
-    ),
-  );
-  histMovList.add(
-    HistMovList(
-      tipo: 'Pessoa',
-      label: 'Z',
-      id: 2,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Entrou no ambiente',
-    ),
-  );
-  histMovList.add(
-    HistMovList(
-      tipo: 'Pessoa',
-      label: 'W',
-      id: 3,
-      data: dFormat.format(DateTime.now()),
-      desc: 'Saiu do Ambiente',
-    ),
-  );
-
+  parseHistMovList();
   return histMovList;
+}
+
+fromJson(Map m) {
+  histMovList.add(
+    HistMovList(
+        tipo: m['type'],
+        label: m['rfid_id'].toString(),
+        id: m['id'],
+        data: m['creation_date'],
+        desc: m['log']),
+  );
 }

@@ -96,6 +96,33 @@ Future<String> getApiKeyFromDB(userName) async {
   return Future<String>.value('erro');
 }
 
+Future<List> getActivityLog() async {
+  var client = http.Client();
+  try {
+    var url = Uri.http(apiUrl, "/api/log_activity");
+    var key = await getApiKeyFromDevice();
+    dev.log("getActivityLog - api key", error: key);
+    var response = await client.get(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": key,
+      },
+    );
+    Map log = jsonDecode(response.body);
+    if (response.statusCode == 201) {
+      if (log['status'] == 'success') {
+        return Future<List>.value(log["data"]);
+      }
+    } else {
+      return Future<List>.value(log["message"]);
+    }
+  } finally {
+    client.close();
+  }
+  return [];
+}
+
 saveApiKey(String apikey) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString('API_Token', apikey);
