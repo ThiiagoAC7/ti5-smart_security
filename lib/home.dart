@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:smart_security/Utils/requisicoes.dart';
 import 'package:smart_security/historico_movimentos.dart';
 import 'Utils/global.dart';
 import 'rfid.dart';
@@ -54,11 +57,37 @@ class HomeBody extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(top: 15),
-            child: sizedBoxButton('Ativar Alarme', () {}, 300, 30),
+            child: sizedBoxButton('Ativar Alarme', () async {
+              var naosei = await activateAlarm(true);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Status : $naosei',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: naosei == 'enabled' ? Colors.green : Colors.red,
+                    ),
+                  ),
+                ),
+              );
+            }, 300, 30),
           ),
           Padding(
             padding: EdgeInsets.only(top: 15),
-            child: sizedBoxButton('Desativar Alarme', () {}, 300, 30),
+            child: sizedBoxButton('Desativar Alarme', () async {
+              var naosei = await activateAlarm(false);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Status : $naosei',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: naosei == 'enabled' ? Colors.green : Colors.red,
+                    ),
+                  ),
+                ),
+              );
+            }, 300, 30),
           ),
         ],
       ),

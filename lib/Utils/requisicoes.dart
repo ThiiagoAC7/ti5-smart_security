@@ -73,6 +73,33 @@ Future registerValidate(userName, password) async {
   return Future.value(false);
 }
 
+Future activateAlarm(activate) async {
+  var client = http.Client();
+  try {
+    var url = Uri.http(apiUrl, '/api/activate_alarm');
+    var key = await getApiKeyFromDevice();
+    var response = await client.post(
+      url,
+      body: jsonEncode(
+        {"activate": activate},
+      ),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": key,
+      },
+    );
+    Map login = jsonDecode(response.body);
+    if (response.statusCode == 201) {
+      dev.log("activateAlarm", error: login['alarm_status']);
+      return Future.value(login['alarm_status']);
+    } else {
+      return Future.value(login['message']);
+    }
+  } finally {
+    client.close();
+  }
+}
+
 Future<String> getApiKeyFromDB(userName) async {
   dev.log("getApiKeyFromDB - inicio");
   var client = http.Client();
