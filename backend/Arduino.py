@@ -11,19 +11,19 @@ class Ard:
                 pass        
 
     def deactivateAlarm(self):
-        self.arduino.write('deactivateAlarm'.encode())
+        self.arduino.write('d'.encode())
         
     def activateAlarm(self):
-        self.arduino.write('activateAlarm'.encode())
+        self.arduino.write('a'.encode())
 
     def readRfidTag(self):
-        self.arduino.write('readRfidTag'.encode())    
+        self.arduino.write('r'.encode())    
         tag = str(self.arduino.readline())
         self.arduino.flush()
         return tag 
 
     def writeActivityLog(self):
-        self.arduino.write('writeActivityLog'.encode())
+        self.arduino.write('w'.encode())
         numLinhas = int(self.arduino.readline())
         l = []
         for i in range(numLinhas):
