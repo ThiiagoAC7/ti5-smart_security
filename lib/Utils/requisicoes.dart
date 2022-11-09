@@ -29,6 +29,8 @@ Future loginValidate(userName, password) async {
     Map login = jsonDecode(response.body);
     if (response.statusCode == 201) {
       if (login['status'] == 'success') {
+        dev.log("login - id", error: login['data']['id']);
+        saveUserId(login['data']['id']);
         return Future.value(login['status']);
       }
     } else {
@@ -102,11 +104,14 @@ Future<List> getActivityLog() async {
     var url = Uri.http(apiUrl, "/api/log_activity");
     var key = await getApiKeyFromDevice();
     dev.log("getActivityLog - api key", error: key);
+    int id = await getUserIdFromDevice();
+    dev.log("getActivityLog - id", error: id);
     var response = await client.get(
       url,
       headers: {
         "Content-Type": "application/json",
         "Authorization": key,
+        "user_id": id.toString(),
       },
     );
     Map log = jsonDecode(response.body);
@@ -126,6 +131,16 @@ Future<List> getActivityLog() async {
 saveApiKey(String apikey) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString('API_Token', apikey);
+}
+
+saveUserId(int id) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setInt('user_id', id);
+}
+
+Future getUserIdFromDevice() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getInt('user_id');
 }
 
 Future getApiKeyFromDevice() async {

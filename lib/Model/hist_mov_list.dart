@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Utils/requisicoes.dart';
 import 'dart:developer' as dev;
-import 'dart:convert';
 
 class HistMovList {
   int? id;
@@ -22,7 +21,7 @@ class HistMovList {
 List<HistMovList> histMovList = [];
 
 parseHistMovList() async {
-  if (histMovList == []) {
+  if (histMovList.isEmpty) {
     dev.log("parseHistMovList - init");
     var jsonstring = await getActivityLog();
 
@@ -42,7 +41,7 @@ fromJson(Map m) {
   histMovList.add(
     HistMovList(
         tipo: m['type'],
-        label: m['rfid_id'].toString(),
+        label: m['object_name'],
         id: m['id'],
         data: m['creation_date'],
         desc: m['log']),
