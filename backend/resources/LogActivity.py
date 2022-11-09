@@ -33,12 +33,15 @@ class LogActivity(Resource):
         auth = request.headers["Authorization"]
         json_data = request.get_json(force=True)
         if auth:
-            rfid_object = Rfid.query.filter_by(id=json_data["rfid_id"]).first()
-            if rfid_object:
-                rfid = rfid_schema.dump(rfid_object)
-                log_list = Activity.query.filter_by(rfid_id=rfid["id"]).all()
-                for log in log_list:
-                    result.append(activities_schema._serialize(log))
+            rfid_list = Rfid.query.filter_by(user_id=json_data["user_id"]).all()
+            if rfid_list:
+                for rfid_object in rfid_list:
+                    rfid = rfid_schema.dump(rfid_object)
+                    log_list = Activity.query.filter_by(rfid_id=rfid["id"]).all()
+                    for log in log_list:
+                        info = activities_schema._serialize(log)
+                        info["object_name"] = rfid["object"]
+                        result.append(info)
             else:
                 return {"message": "Object does not have any activity registered"}
         else:
