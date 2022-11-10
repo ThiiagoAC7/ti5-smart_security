@@ -2,18 +2,18 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as dev;
+import 'dart:io';
 
-const apiUrl = "10.0.2.2:5000";
+var apiUrl = Platform.isAndroid ? "10.0.2.2:5000" : "127.0.0.1:5000";
 const deubom = "success";
 
 Future loginValidate(userName, password) async {
   var client = http.Client();
   try {
     var url = Uri.http(apiUrl, "/api/signin");
-    // var key = await getApiKeyFromDevice();
     var key = await getApiKeyFromDB(userName);
-    saveApiKey(key);
     dev.log("login - key", error: key);
+    saveApiKey(key);
     var response = await client.post(
       url,
       body: jsonEncode({
@@ -96,12 +96,102 @@ Future<String> getApiKeyFromDB(userName) async {
   return Future<String>.value('erro');
 }
 
+Future<List> getActivityLog() async {
+  var client = http.Client();
+  try {
+    var url = Uri.http(apiUrl, "/api/log_activity");
+    var key = await getApiKeyFromDevice();
+    dev.log("getActivityLog - api key", error: key);
+    int id = await getUserIdFromDevice();
+    dev.log("getActivityLog - id", error: id);
+    var response = await client.get(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": key,
+        "user_id": id.toString(),
+      },
+    );
+    Map log = jsonDecode(response.body);
+    if (response.statusCode == 201) {
+      if (log['status'] == 'success') {
+        return Future<List>.value(log["data"]);
+      }
+    } else {
+      return Future<List>.value(log["message"]);
+    }
+  } finally {
+    client.close();
+  }
+  return [];
+}
+
+Future configureRfid(object) async {
+  saveObject(object);
+  var client = http.Client();
+  try {
+    var url = Uri.http(apiUrl, '/api/rfid_registration');
+    var key = await getApiKeyFromDevice();
+    var response = await client.post(
+      url,
+      body: jsonEncode(
+        {
+          "object": object,
+        },
+      ),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": key,
+      },
+    );
+    Map login = jsonDecode(response.body);
+    if (response.statusCode == 201) {
+      saveRfid(login['data']['rfid']);
+      return Future.value(login['status']);
+    } else {
+      return Future.value(login['message']);
+    }
+  } finally {
+    client.close();
+  }
+}
+
 saveApiKey(String apikey) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString('API_Token', apikey);
 }
 
+saveUserId(int id) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setInt('user_id', id);
+}
+
+Future getUserIdFromDevice() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getInt('user_id');
+}
+
 Future getApiKeyFromDevice() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString("API_Token");
+}
+
+saveObject(String object) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('object', object);
+}
+
+Future getObjectFromDevice() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('object');
+}
+
+saveRfid(String rfid) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('rfid', rfid);
+}
+
+Future getRfidFromDevice() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('rfid');
 }
