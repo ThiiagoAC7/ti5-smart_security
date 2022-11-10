@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from Arduino import Ard 
+from Arduino import Ard
 import serial
 import sys
 
@@ -8,7 +8,6 @@ class Alarm(Resource):
     def post(self):
         auth = request.headers["Authorization"]
         print(auth, file = sys.stderr)
-        # ard = Ard()
         if auth:
             json_data = request.get_json(force=True)
             if json_data["activate"]:

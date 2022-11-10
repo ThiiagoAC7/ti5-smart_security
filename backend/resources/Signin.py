@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from Model import db, User, UserSchema
+from Arduino import Ard
 
 users_schema = UserSchema(many=True)
 user_schema = UserSchema()
@@ -8,6 +9,7 @@ user_schema = UserSchema()
 
 class Signin(Resource):
     def post(self):
+        Ard.connectArd()
         result = ""
         json_data = request.get_json(force=True)      
         try:

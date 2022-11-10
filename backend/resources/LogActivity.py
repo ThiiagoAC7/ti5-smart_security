@@ -41,7 +41,7 @@ class LogActivity(Resource):
                 activity = Activity(
                     rfid_id=request.headers["rfid_id"],
                     type=request.headers["type"],
-                    log=request.headers["log"],
+                    log= i,
                     creation_date=datetime.datetime.now(),
                 )
 
