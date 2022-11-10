@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as dev;
 
-const apiUrl = "10.0.2.2:5000";
+var apiUrl = "127.0.0.1:5000";
 const deubom = "success";
 
 Future loginValidate(userName, password) async {
@@ -46,6 +46,7 @@ Future registerValidate(userName, password) async {
   var client = http.Client();
   try {
     var url = Uri.http(apiUrl, "/api/register");
+    dev.log("asdasdasd");
     var response = await client.post(
       url,
       body: jsonEncode({
@@ -53,7 +54,8 @@ Future registerValidate(userName, password) async {
         "password": password,
       }),
       headers: {
-        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE, HEAD"
       },
       encoding: Utf8Codec(),
     );

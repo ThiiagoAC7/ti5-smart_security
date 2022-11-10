@@ -1,7 +1,8 @@
 from flask_restful import Resource
 from flask import request
 from Model import db, Activity, ActivitySchema, Rfid, RfidSchema
-import sys
+from Arduino import Ard 
+import datetime
 
 activities_schema = ActivitySchema(many=True)
 activity_schema = ActivitySchema()
@@ -32,8 +33,21 @@ class LogActivity(Resource):
     def get(self):
         result = []
         auth = request.headers["Authorization"]
+        json_data = request.get_json(force=True)
         if auth:
             user_id = request.headers["user_id"]
+            log_list = Ard.writeActivityLog();
+            for i in log_list:
+                activity = Activity(
+                    rfid_id=request.headers["rfid_id"],
+                    type=request.headers["type"],
+                    log=request.headers["log"],
+                    creation_date=datetime.datetime.now(),
+                )
+
+                db.session.add(activity)
+                db.session.commit()
+   
             rfid_list = Rfid.query.filter_by(user_id = user_id).all()
             if rfid_list:
                 for rfid_object in rfid_list:

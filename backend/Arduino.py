@@ -1,34 +1,74 @@
 import serial 
 import datetime
+import sys
+import time
 
 class Ard:
-    def __init__(self):
+    # def __init__(self):
+        # while True: #Loop para a conexão com o Arduino
+        #     try:  #Tenta se conectar, se conseguir, o loop se encerra
+        #         self.arduino = serial.Serial('COM4', 9600)
+        #         print('Arduino conectado', file = sys.stderr)
+        #         break
+        #     except:
+        #         pass        
+
+    def deactivateAlarm():
         while True: #Loop para a conexão com o Arduino
             try:  #Tenta se conectar, se conseguir, o loop se encerra
-                self.arduino = serial.Serial('COM4', 9600)
-                print('Arduino conectado')
+                arduino = serial.Serial('COM4', 9600)
+                print('Arduino conectado', file = sys.stderr)
                 break
             except:
-                pass        
-
-    def deactivateAlarm(self):
-        self.arduino.write('d'.encode())
+                pass 
+        time.sleep(1)
+        arduino.write('d'.encode())
+        arduino.flush() #Limpa a comunicação
         
-    def activateAlarm(self):
-        self.arduino.write('a'.encode())
+    def activateAlarm():
+        while True: #Loop para a conexão com o Arduino
+            try:  #Tenta se conectar, se conseguir, o loop se encerra
+                arduino = serial.Serial('COM4', 9600)
+                print('Arduino conectado', file = sys.stderr)
+                break
+            except:
+                pass 
+        time.sleep(5)
+        arduino.write('a'.encode())
+        arduino.flush() #Limpa a comunicação
 
-    def readRfidTag(self):
-        self.arduino.write('r'.encode())    
-        tag = str(self.arduino.readline())
-        self.arduino.flush()
+    def readRfidTag():
+        while True: #Loop para a conexão com o Arduino
+            try:  #Tenta se conectar, se conseguir, o loop se encerra
+                arduino = serial.Serial('COM4', 9600)
+                print('Arduino conectado', file = sys.stderr)
+                break
+            except:
+                pass 
+        time.sleep(1)
+        arduino.write('r'.encode())
+        # time.sleep(1)    
+        tag = str(arduino.readline())
+        arduino.flush()
         return tag 
 
-    def writeActivityLog(self):
-        self.arduino.write('w'.encode())
-        numLinhas = int(self.arduino.readline())
+    def writeActivityLog():
+        while True: #Loop para a conexão com o Arduino
+            try:  #Tenta se conectar, se conseguir, o loop se encerra
+                arduino = serial.Serial('COM4', 9600)
+                print('Arduino conectado', file = sys.stderr)
+                break
+            except:
+                pass 
+        time.sleep(1)
+        arduino.write('w'.encode())
+        # time.sleep(1)
+        numLinhas = int(arduino.readline())
         l = []
         for i in range(numLinhas):
-            l.append(str(self.arduino.readline()) + datetime.datetime.now())
-        self.arduino.flush()
+            l.append(str(arduino.readline()) + datetime.datetime.now())
+
+        print(l, file = sys.stderr)
+        arduino.flush()
         return l
 
