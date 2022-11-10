@@ -134,6 +134,8 @@ Future<List> getActivityLog() async {
     var key = await getApiKeyFromDevice();
     dev.log("getActivityLog - api key", error: key);
     int id = await getUserIdFromDevice();
+    String rfid = await getRfidFromDevice();
+    String object = await getObjectFromDevice();
     dev.log("getActivityLog - id", error: id);
     var response = await client.get(
       url,
@@ -141,6 +143,8 @@ Future<List> getActivityLog() async {
         "Content-Type": "application/json",
         "Authorization": key,
         "user_id": id.toString(),
+        "rfid_id": rfid,
+        "type": "Alerta",
       },
     );
     Map log = jsonDecode(response.body);
