@@ -155,6 +155,34 @@ Future<List> getActivityLog() async {
   return [];
 }
 
+Future configureRfid(object) async {
+  var client = http.Client();
+  try {
+    var url = Uri.http(apiUrl, '/api/rfid_registration');
+    var key = await getApiKeyFromDevice();
+    var response = await client.post(
+      url,
+      body: jsonEncode(
+        {
+          "object": object,
+        },
+      ),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": key,
+      },
+    );
+    Map login = jsonDecode(response.body);
+    if (response.statusCode == 201) {
+      return Future.value(login['status']);
+    } else {
+      return Future.value(login['message']);
+    }
+  } finally {
+    client.close();
+  }
+}
+
 saveApiKey(String apikey) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString('API_Token', apikey);

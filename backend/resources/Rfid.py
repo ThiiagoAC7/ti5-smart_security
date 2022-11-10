@@ -1,6 +1,8 @@
 from flask_restful import Resource
 from flask import request
 from Model import db, Rfid, RfidSchema, User, UserSchema
+from Arduino import Ard
+
 
 rfids_schema = RfidSchema(many=True)
 rfid_schema = RfidSchema()
@@ -13,9 +15,10 @@ class RfidRegistration(Resource):
         auth = request.headers["Authorization"]
         if auth:
             user = User.query.filter_by(api_key=auth).first()
+            rfid = Ard.readRfidTag()
             if user:
                 rfid = Rfid(
-                    rfid=json_data["rfid"],
+                    rfid=rfid,
                     object=json_data["object"],
                     user_id=user.id,
                 )

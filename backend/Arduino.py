@@ -1,4 +1,5 @@
-import serial #Importa a biblioteca
+import serial 
+import datetime
 
 class Ard:
     def __init__(self):
@@ -27,7 +28,7 @@ class Ard:
         numLinhas = int(self.arduino.readline())
         l = []
         for i in range(numLinhas):
-            l.append(str(self.arduino.readline()))
+            l.append(str(self.arduino.readline()) + datetime.datetime.now())
         self.arduino.flush()
         return l
 
