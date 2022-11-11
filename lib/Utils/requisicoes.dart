@@ -134,7 +134,7 @@ Future<List> getActivityLog() async {
     var key = await getApiKeyFromDevice();
     dev.log("getActivityLog - api key", error: key);
     int id = await getUserIdFromDevice();
-    String rfid = await getRfidFromDevice();
+    int rfid = await getRfidFromDevice();
     String object = await getObjectFromDevice();
     dev.log("getActivityLog - id", error: id);
     var response = await client.get(
@@ -143,7 +143,7 @@ Future<List> getActivityLog() async {
         "Content-Type": "application/json",
         "Authorization": key,
         "user_id": id.toString(),
-        "rfid_id": rfid,
+        "rfid_id": rfid.toString(),
         "type": "Alerta",
       },
     );
@@ -221,12 +221,12 @@ Future getObjectFromDevice() async {
   return prefs.getString('object');
 }
 
-saveRfid(String rfid) async {
+saveRfid(int rfid) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('rfid', rfid);
+  await prefs.setInt('rfid', rfid);
 }
 
 Future getRfidFromDevice() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('rfid');
+  return prefs.getInt('rfid');
 }
