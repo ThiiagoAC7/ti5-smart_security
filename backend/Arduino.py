@@ -31,7 +31,7 @@ class Ard:
         time.sleep(1)
         arduino.write('r'.encode())
         # time.sleep(1)    
-        tag = str(arduino.readline().decode())
+        tag = int(arduino.readline().decode())
         arduino.flush()
         return tag 
 
