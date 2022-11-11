@@ -135,7 +135,7 @@ Future<List> getActivityLog() async {
     dev.log("getActivityLog - api key", error: key);
     int id = await getUserIdFromDevice();
     int rfid = await getRfidFromDevice();
-    String object = await getObjectFromDevice();
+    // String object = await getObjectFromDevice();
     dev.log("getActivityLog - id", error: id);
     var response = await client.get(
       url,
@@ -181,7 +181,7 @@ Future configureRfid(object) async {
     );
     Map login = jsonDecode(response.body);
     if (response.statusCode == 201) {
-      saveRfid(login['data']['rfid']);
+      saveRfid(int.parse(login['data']['rfid']));
       return Future.value(login['status']);
     } else {
       return Future.value(login['message']);
