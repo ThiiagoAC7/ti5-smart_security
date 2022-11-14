@@ -33,7 +33,6 @@ class LogActivity(Resource):
     def get(self):
         result = []
         auth = request.headers["Authorization"]
-        json_data = request.get_json(force=True)
         if auth:
             user_id = request.headers["user_id"]
             log_list = Ard.writeActivityLog();
